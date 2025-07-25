@@ -1,0 +1,42 @@
+# dependencies
+/node_modules/
+
+# production build
+/build/
+
+# misc
+.DS_Store
+.env
+.env.*     # .env.local, .env.production, etc.
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# secrets
+client-secret.json
+
+# testing
+/coverage/
+*.lcov
+
+# IDEs and editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# OS-specific
+Thumbs.db
+ehthumbs.db
+
+# optional
+*.log
+*.cache
+*.tmp
+*.bak
+
+# react-scripts specific
+/.eslintcache
