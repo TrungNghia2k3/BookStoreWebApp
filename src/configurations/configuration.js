@@ -1,7 +1,7 @@
 export const OAuthConfig = {
   clientId:
     "717110965142-vvo65i71osc992k0983lfbo7m73sg2ha.apps.googleusercontent.com",
-  redirectUri: "http://localhost:3000/authenticate", //Google sẽ trả response về Url này
+  redirectUri: "https://book-store-web-app-seven.vercel.app/authenticate", //Google sẽ trả response về Url này
   authUri: "https://accounts.google.com/o/oauth2/auth",
 };
 

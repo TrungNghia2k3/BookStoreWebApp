@@ -26,7 +26,7 @@ export default function Authenticate() {
 
       // Exchange auth code for token via backend API
       fetch(
-        `http://localhost:8080/api/auth/outbound/authentication?code=${authCode}`,
+        `https://book-store-web-api-5ac5f5640ffb.herokuapp.com/api/auth/outbound/authentication?code=${authCode}`,
         {
           method: "POST",
         }

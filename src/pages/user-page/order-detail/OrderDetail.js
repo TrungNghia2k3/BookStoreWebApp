@@ -154,7 +154,7 @@ const OrderDetail = () => {
                       <div className="d-flex">
                         <img
                           loading="lazy"
-                          src={`http://localhost:8080/api/images/product/${item.product.id}/${item.product.imageMain}`}
+                          src={`https://res.cloudinary.com/dmbpesu2z/image/upload/product/${item.product.id}/${item.product.imageMain}`}
                           alt={item.product.title}
                           className="card-img"
                           style={{ width: "120px", height: "120px"}}

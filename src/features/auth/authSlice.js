@@ -12,7 +12,7 @@ export const login = createAsyncThunk(
     try {
       // Making a POST request to the login endpoint with the provided credentials
       const response = await axios.post(
-        "http://localhost:8080/api/auth/token",
+        "https://book-store-web-api-5ac5f5640ffb.herokuapp.com/api/auth/token",
         { username, password }
       );
 
@@ -37,7 +37,7 @@ export const fetchUserInfo = createAsyncThunk(
     try {
       // Making a GET request to the user info endpoint with the token in the header
       const response = await axios.get(
-        "http://localhost:8080/api/users/my-info",
+        "https://book-store-web-api-5ac5f5640ffb.herokuapp.com/api/users/my-info",
         {
           headers: {
             Authorization: `Bearer ${token}`,

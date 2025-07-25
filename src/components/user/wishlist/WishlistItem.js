@@ -16,7 +16,7 @@ const WishlistItem = ({ product, onAddToCart, onRemoveFromWishlist }) => {
             >
               <Card.Img
                 variant="top"
-                src={`http://localhost:8080/api/images/product/${product.id}/${product.imageMain}`}
+                src={`https://res.cloudinary.com/dmbpesu2z/image/upload/product/${product.id}/${product.imageMain}`}
                 alt={product.title}
                 style={{
                   width: "100px",

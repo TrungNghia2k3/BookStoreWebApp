@@ -179,7 +179,7 @@ export const getAllProductsByAuthorName = async (authorName) => {
 // Fetch sản phẩm đã lọc dựa trên các bộ lọc
 export const fetchFilteredProductsFromAPI = async (params) => {
   const query = new URLSearchParams(params).toString(); // Chuyển đổi đối tượng params thành chuỗi query
-  const response = await fetch(`http://localhost:8080/api/products?${query}`);
+  const response = await fetch(`https://book-store-web-api-5ac5f5640ffb.herokuapp.com/api/products?${query}`);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }

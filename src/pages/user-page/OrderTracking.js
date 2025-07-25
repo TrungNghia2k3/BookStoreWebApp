@@ -162,7 +162,7 @@ const OrderTracking = () => {
                 className="d-flex my-2 border border-1"
               >
                 <img
-                  src={`http://localhost:8080/api/images/product/${product.product.id}/${product.product.imageMain}`}
+                  src={`https://res.cloudinary.com/dmbpesu2z/image/upload/product/${product.product.id}/${product.product.imageMain}`}
                   alt={product.product.title}
                   style={{ width: "100px", height: "100px" }}
                 />
