@@ -15,7 +15,7 @@ const Footer = () => {
             className="col-12 col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 text-white text-decoration-none"
           >
             <img
-              src="/logo/aptech-logo.avif"
+              src="images/logo/aptech-logo.avif"
               alt="Book Store logo"
               width="200"
               height="40"

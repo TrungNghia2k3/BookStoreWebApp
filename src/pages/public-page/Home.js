@@ -125,7 +125,7 @@ export default function Home() {
       <div>
         <img
           className="d-block w-100"
-          src="/images/banner/banner-1.webp"
+          src="/images/banner/banner-1.jpg"
           alt="Third slide"
         />
       </div>
