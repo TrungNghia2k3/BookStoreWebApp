@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/footer/Footer";
 import Header from "./components/header/Header";
+import GlobalLoading from "./components/loading/GlobalLoading";
 import { fetchUserInfo } from "./features/auth/authSlice";
 import AppRoutes from "./routes/AppRoutes";
 
@@ -73,6 +74,9 @@ function App() {
   // Logging user information for debugging purposes
   return (
     <div className="App">
+      {/* Global Loading Overlay */}
+      <GlobalLoading />
+      
       {/* Rendering the Header component with authentication status and user details */}
       <Header
         isLoggedIn={!!token} // Passing a boolean indicating if the user is logged in

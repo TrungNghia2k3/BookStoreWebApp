@@ -1,8 +1,8 @@
-export const WebAppUrl = "https://book-store-web-app-seven.vercel.app";
+export const WebAppUrl = process.env.REACT_APP_WEB_APP_URL || "https://book-store-web-app-seven.vercel.app";
 
 export const OAuthConfig = {
   clientId: process.env.REACT_APP_OAUTH_CLIENT_ID,
-  redirectUri: `${WebAppUrl}/authenticate`, //Google sẽ trả response về Url này
+  redirectUri: `${process.env.REACT_APP_WEB_APP_URL || "https://book-store-web-app-seven.vercel.app"}/authenticate`, //Google sẽ trả response về Url này
   authUri: "https://accounts.google.com/o/oauth2/auth",
 };
 
@@ -42,7 +42,7 @@ export const GHNConfig = {
 };
 
 export const CONFIG = {
-  API_GATEWAY: process.env.REACT_APP_API_GATEWAY,
+  API_GATEWAY: process.env.REACT_APP_API_GATEWAY || "https://book-store-web-api-5ac5f5640ffb.herokuapp.com/api",
 };
 
 export const API = {

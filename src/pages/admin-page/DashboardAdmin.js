@@ -54,13 +54,65 @@ const DashboardAdmin = () => {
   const [showModal, setShowModal] = useState(false);
   const [newStatus, setNewStatus] = useState("");
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchDashboardData();
   }, []);
 
   const fetchDashboardData = async () => {
+    setLoading(true);
+    setError(null);
+    console.log("🔄 Fetching dashboard data...");
+    console.log("📡 API Gateway:", process.env.REACT_APP_API_GATEWAY || "Using fallback URL");
+    
     try {
+      // Fetch data with individual error handling to prevent one failure from breaking everything
+      const results = await Promise.allSettled([
+        getAllPaginationSorUsers().catch(err => {
+          console.error("Users fetch failed:", err);
+          return { totalElements: 0 };
+        }),
+        getAllProducts().catch(err => {
+          console.error("Products fetch failed:", err);
+          return { totalElements: 0 };
+        }),
+        getAllCategories().catch(err => {
+          console.error("Categories fetch failed:", err);
+          return { result: [] };
+        }),
+        getAllPublishers().catch(err => {
+          console.error("Publishers fetch failed:", err);
+          return { result: [] };
+        }),
+        getOrderSummary().catch(err => {
+          console.error("Order summary fetch failed:", err);
+          return { result: { totalOrders: 0, totalSale: 0 } };
+        }),
+        getAllFeedbacks().catch(err => {
+          console.error("Feedbacks fetch failed:", err);
+          return { result: [] };
+        }),
+        getAllManufactures().catch(err => {
+          console.error("Manufactures fetch failed:", err);
+          return { result: [] };
+        }),
+        getAllCoupons().catch(err => {
+          console.error("Coupons fetch failed:", err);
+          return { result: [] };
+        }),
+        rankingMostPopularProducts().catch(err => {
+          console.error("Ranking products fetch failed:", err);
+          return { result: [] };
+        }),
+        getAllOrdersWithOrderPlacedStatus().catch(err => {
+          console.error("Placed orders fetch failed:", err);
+          return { result: [] };
+        }),
+      ]);
+
+      // Extract values from settled promises
       const [
         usersResponse,
         productsResponse,
@@ -72,35 +124,47 @@ const DashboardAdmin = () => {
         couponsResponse,
         rankingProductsResponse,
         placedOrdersResponse,
-      ] = await Promise.all([
-        getAllPaginationSorUsers(),
-        getAllProducts(),
-        getAllCategories(),
-        getAllPublishers(),
-        getOrderSummary(),
-        getAllFeedbacks(),
-        getAllManufactures(),
-        getAllCoupons(),
-        rankingMostPopularProducts(),
-        getAllOrdersWithOrderPlacedStatus(),
-      ]);
+      ] = results.map(result => result.status === 'fulfilled' ? result.value : result.reason || {});
+
+      console.log("✅ Dashboard data fetched");
+      console.log("📊 Users:", usersResponse?.totalElements || 0);
+      console.log("📊 Products:", productsResponse?.totalElements || 0);
 
       setDashboardData({
-        numberUsers: usersResponse.totalElements,
-        numberProducts: productsResponse.totalElements,
-        numberCategories: categoriesResponse.result.length,
-        numberPublishers: publishersResponse.result.length,
-        numberOrders: ordersResponse.result.totalOrders,
-        numberFeedbacks: feedbacksResponse.result.length,
-        numberManufactures: manufacturesResponse.result.length,
-        numberCoupons: couponsResponse.result.length,
-        totalSale: ordersResponse.result.totalSale,
+        numberUsers: usersResponse?.totalElements || 0,
+        numberProducts: productsResponse?.totalElements || 0,
+        numberCategories: categoriesResponse?.result?.length || 0,
+        numberPublishers: publishersResponse?.result?.length || 0,
+        numberOrders: ordersResponse?.result?.totalOrders || 0,
+        numberFeedbacks: feedbacksResponse?.result?.length || 0,
+        numberManufactures: manufacturesResponse?.result?.length || 0,
+        numberCoupons: couponsResponse?.result?.length || 0,
+        totalSale: ordersResponse?.result?.totalSale || 0,
       });
 
-      setOrders(placedOrdersResponse.result);
-      setProducts(rankingProductsResponse.result);
+      setOrders(placedOrdersResponse?.result || []);
+      setProducts(rankingProductsResponse?.result || []);
+      
+      // Debug logging for products structure
+      console.log("📦 Orders data:", placedOrdersResponse?.result?.length || 0, "orders");
+      console.log("⭐ Products data:", rankingProductsResponse?.result?.length || 0, "products");
+      if (rankingProductsResponse?.result?.length > 0) {
+        console.log("📦 First product structure:", rankingProductsResponse.result[0]);
+      }
+      
+      // Check if any requests failed
+      const failedCount = results.filter(r => r.status === 'rejected').length;
+      if (failedCount > 0) {
+        console.warn(`⚠️ ${failedCount} out of 10 API calls failed, but showing available data`);
+        toast.warning(`Some data couldn't be loaded. Showing available information.`);
+      }
     } catch (error) {
-      console.error("Error fetching dashboard data:", error);
+      console.error("❌ Critical error fetching dashboard data:", error);
+      console.error("Error details:", error.response?.data || error.message);
+      setError("Failed to load dashboard data. Please try again later.");
+      toast.error("Failed to load dashboard data. Please check your connection.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -171,24 +235,50 @@ const DashboardAdmin = () => {
     }
   };
 
+  // Loading state
+  if (loading) {
+    return (
+      <div className="text-center mt-5">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+        <p className="mt-3">Loading dashboard data...</p>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="alert alert-danger m-5" role="alert">
+        <h4 className="alert-heading">Error Loading Dashboard</h4>
+        <p>{error}</p>
+        <hr />
+        <Button variant="primary" onClick={fetchDashboardData}>
+          Retry
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <>
       <Row>
         <DashboardCard
           title="Users"
-          value={numberUsers}
+          value={numberUsers || 0}
           icon={<BsPeople />}
           link="/admin/users"
         />
         <DashboardCard
           title="Products"
-          value={numberProducts}
+          value={numberProducts || 0}
           icon={<BsBox />}
           link="/admin/products"
         />
         <DashboardCard
           title="Categories"
-          value={numberCategories}
+          value={numberCategories || 0}
           icon={<BsTags />}
           link="/admin/categories"
         />
@@ -197,19 +287,19 @@ const DashboardAdmin = () => {
       <Row>
         <DashboardCard
           title="Publishers"
-          value={numberPublishers}
+          value={numberPublishers || 0}
           icon={<BsBuilding />}
           link="/admin/publishers"
         />
         <DashboardCard
           title="Orders"
-          value={numberOrders}
+          value={numberOrders || 0}
           icon={<BsClipboardData />}
           link="/admin/orders"
         />
         <DashboardCard
           title="Feedbacks"
-          value={numberFeedbacks}
+          value={numberFeedbacks || 0}
           icon={<BsChatDots />}
           link="/admin/feedbacks"
         />
@@ -218,19 +308,19 @@ const DashboardAdmin = () => {
       <Row>
         <DashboardCard
           title="Manufactures"
-          value={numberManufactures}
+          value={numberManufactures || 0}
           icon={<Truck />}
           link="/admin/manufactures"
         />
         <DashboardCard
           title="Coupons"
-          value={numberCoupons}
+          value={numberCoupons || 0}
           icon={<Receipt />}
           link="/admin/coupons"
         />
         <DashboardCard
           title="Total Sale"
-          value={formatCurrencyVND(totalSale)}
+          value={formatCurrencyVND(totalSale || 0)}
           icon={<CalculatorFill />}
           link="/admin/orders"
         />
@@ -259,26 +349,34 @@ const DashboardAdmin = () => {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order) => (
-                  <tr key={order.id}>
-                    <td className="fw-bold">{order.id}</td>
-                    <td>{formatDateWithAmPm(order.orderDate)}</td>
-                    <td>{formatCurrencyVND(order.totalAmount)}</td>
-                    <td className={getOrderStatusClass(order.orderStatus)}>
-                      {order.orderStatus}
-                    </td>
-                    <td>{order.userAddress.fullName}</td>
-                    <td>{order.userAddress.phone}</td>
-                    <td>
-                      <Button
-                        variant="primary"
-                        onClick={() => handleShowOrderDetails(order.id)}
-                      >
-                        Show
-                      </Button>
+                {orders && orders.length > 0 ? (
+                  orders.map((order) => (
+                    <tr key={order.id}>
+                      <td className="fw-bold">{order.id}</td>
+                      <td>{formatDateWithAmPm(order.orderDate)}</td>
+                      <td>{formatCurrencyVND(order.totalAmount)}</td>
+                      <td className={getOrderStatusClass(order.orderStatus)}>
+                        {order.orderStatus}
+                      </td>
+                      <td>{order?.userAddress?.fullName || 'N/A'}</td>
+                      <td>{order?.userAddress?.phone || 'N/A'}</td>
+                      <td>
+                        <Button
+                          variant="primary"
+                          onClick={() => handleShowOrderDetails(order.id)}
+                        >
+                          Show
+                        </Button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="7" className="text-center text-muted">
+                      No recent orders available
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </Table>
 
@@ -314,14 +412,22 @@ const DashboardAdmin = () => {
                 </tr>
               </thead>
               <tbody>
-                {products.map((product) => (
-                  <tr key={product.product.id}>
-                    <td className="fw-bold">{product.product.id}</td>
-                    <td>{product.product.title}</td>
-                    <td>{product.product.soldItems}</td>
-                    <td>{product.totalQuantity}</td>
+                {products && products.length > 0 ? (
+                  products.map((product) => (
+                    <tr key={product?.product?.id || Math.random()}>
+                      <td className="fw-bold">{product?.product?.id || 'N/A'}</td>
+                      <td>{product?.product?.title || 'N/A'}</td>
+                      <td>{product?.product?.soldItems || 0}</td>
+                      <td>{product?.totalQuantity || 0}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4" className="text-center text-muted">
+                      No popular products data available
+                    </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </Table>
           </div>

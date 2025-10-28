@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Container, Form, Row, Spinner } from "react-bootstrap";
+import { Col, Container, Form, Row } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import LoadingButton from "../../components/loading/LoadingButton";
 import { getAllCategories } from "../../services/categoryService";
 import {
   createProduct,
@@ -208,7 +209,6 @@ const AddEditProduct = () => {
   return (
     <Container>
       <h1 className="fw-bold">{isEditMode ? "Edit Product" : "Add Product"}</h1>
-      {loading && <Spinner animation="border" />}
       <Form onSubmit={handleSubmit}>
         <Row>
           <Col md={6}>
@@ -525,9 +525,15 @@ const AddEditProduct = () => {
           </Col>
         </Row>
 
-        <Button variant="primary" type="submit" className="mt-3">
+        <LoadingButton 
+          loading={loading}
+          variant="primary" 
+          type="submit" 
+          className="mt-3"
+          size="lg"
+        >
           {isEditMode ? "Update Product" : "Add Product"}
-        </Button>
+        </LoadingButton>
       </Form>
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </Container>

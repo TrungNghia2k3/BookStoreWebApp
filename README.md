@@ -12,6 +12,7 @@ A comprehensive e-commerce web application for book shopping built with React, f
 - **Admin Dashboard:** Full CRUD operations for products, categories, publishers, users, and order management
 - **Responsive Design:** Mobile-first approach with Bootstrap and custom SCSS styling
 - **Real-time Features:** Notifications, order tracking, and inventory management
+- **Smart Loading System:** Global loading overlay and button-level loading states for smooth UX during API calls
 
 ---
 
@@ -34,6 +35,7 @@ A comprehensive e-commerce web application for book shopping built with React, f
   - `admin/`: Admin-specific components for management dashboards
   - `header/`: Navigation, search, and user menu components
   - `footer/`: Site footer with links and information
+  - `loading/`: Global loading overlay and loading button components
   - `pagination/`: Product listing pagination controls
   - `quantity-control/`: Cart quantity management
   - `user/`: User-specific components for profile, checkout, etc.
