@@ -3,8 +3,7 @@ import { Card } from "react-bootstrap";
 import { formatLeadTime, formatCurrencyVND } from "../../../utilities/Utils";
 
 const ShippingMethod = ({ leadTime, fee }) =>
-  leadTime &&
-  fee && (
+  leadTime && (
     <div className="mt-3">
       <Card>
         <Card.Body>

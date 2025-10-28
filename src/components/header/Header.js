@@ -51,7 +51,7 @@ export default function Header({ isLoggedIn, userRoles, username }) {
         <Container>
           <Navbar.Brand href={userRoles !== "ADMIN" ? "/" : null}>
             <img
-              src="images/logo/aptech-logo.avif"
+              src="images/logo/aptech-logo.jpg"
               alt="Book Store logo"
               width="200"
               height="40"

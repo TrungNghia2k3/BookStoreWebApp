@@ -1,12 +1,12 @@
 export const OAuthConfig = {
   clientId:
     "717110965142-vvo65i71osc992k0983lfbo7m73sg2ha.apps.googleusercontent.com",
-  redirectUri: "https://book-store-web-app-seven.vercel.app/authenticate", //Google sẽ trả response về Url này
+  redirectUri: "http://localhost:3000/authenticate", //Google sẽ trả response về Url này
   authUri: "https://accounts.google.com/o/oauth2/auth",
 };
 
 export const GHNConfig = {
-  tokenApi : process.env.GHN_TOKEN,
+  tokenApi: "5f63213c-4842-11ef-8e53-0a00184fe694",
 
   // https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shop/all (with header tokenApi)
   data: {
@@ -41,7 +41,7 @@ export const GHNConfig = {
 };
 
 export const CONFIG = {
-  API_GATEWAY: "https://book-store-web-api-5ac5f5640ffb.herokuapp.com/api",
+  API_GATEWAY: "http://localhost:8080/api",
 };
 
 export const API = {

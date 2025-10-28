@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { fetchUserInfo } from "../../features/auth/authSlice";
+import { CONFIG } from "../../configurations/configuration";
 
 export default function Authenticate() {
   const navigate = useNavigate(); // For navigating between routes
@@ -26,7 +27,7 @@ export default function Authenticate() {
 
       // Exchange auth code for token via backend API
       fetch(
-        `https://book-store-web-api-5ac5f5640ffb.herokuapp.com/api/auth/outbound/authentication?code=${authCode}`,
+        `${CONFIG.API_GATEWAY}/auth/outbound/authentication?code=${authCode}`,
         {
           method: "POST",
         }

@@ -1,8 +1,9 @@
 import axios from "axios";
+import { CONFIG } from "../configurations/configuration";
 
 export const checkEmailWithNeverBounce = async (email) => {
   try {
-    const response = await axios.post("https://book-store-web-api-5ac5f5640ffb.herokuapp.com/api/email-validation", null, {
+    const response = await axios.post(`${CONFIG.API_GATEWAY}/email-validation`, null, {
       params: { email },
     });
     return response.data;

@@ -1,6 +1,7 @@
 import httpClient from "../configurations/httpClient";
 import { API } from "../configurations/configuration";
 import { getToken } from "./localStorageService";
+import { CONFIG } from "../configurations/configuration";
 
 export const createProduct = async (
   productRequest,
@@ -179,7 +180,7 @@ export const getAllProductsByAuthorName = async (authorName) => {
 // Fetch sản phẩm đã lọc dựa trên các bộ lọc
 export const fetchFilteredProductsFromAPI = async (params) => {
   const query = new URLSearchParams(params).toString(); // Chuyển đổi đối tượng params thành chuỗi query
-  const response = await fetch(`https://book-store-web-api-5ac5f5640ffb.herokuapp.com/api/products?${query}`);
+  const response = await fetch(`${CONFIG.API_GATEWAY}/products?${query}`);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }

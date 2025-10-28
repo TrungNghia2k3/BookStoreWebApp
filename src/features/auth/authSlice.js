@@ -2,7 +2,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import httpClient from "../../configurations/httpClient";
-import { API } from "../../configurations/configuration";
+import { API, CONFIG } from "../../configurations/configuration";
 
 // Asynchronous thunk action for logging in
 // Takes in username and password, and returns a token if successful
@@ -12,7 +12,7 @@ export const login = createAsyncThunk(
     try {
       // Making a POST request to the login endpoint with the provided credentials
       const response = await axios.post(
-        "https://book-store-web-api-5ac5f5640ffb.herokuapp.com/api/auth/token",
+        `${CONFIG.API_GATEWAY}/auth/token`,
         { username, password }
       );
 
@@ -37,7 +37,7 @@ export const fetchUserInfo = createAsyncThunk(
     try {
       // Making a GET request to the user info endpoint with the token in the header
       const response = await axios.get(
-        "https://book-store-web-api-5ac5f5640ffb.herokuapp.com/api/users/my-info",
+        `${CONFIG.API_GATEWAY}/users/my-info`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
