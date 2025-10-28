@@ -117,7 +117,7 @@ npm install
 npm start
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) to view the application
+4. Open [https://book-store-web-app-seven.vercel.app](https://book-store-web-app-seven.vercel.app) to view the application
 
 ### Available Scripts
 - `npm start`: Runs the app in development mode
